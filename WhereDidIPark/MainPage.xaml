@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:viewmodels="clr-namespace:WhereDidIPark.ViewModels"
+	x:DataType="viewmodels:MainViewModel"
+	x:Class="WhereDidIPark.MainPage"
+	Shell.NavBarIsVisible="False">
+
+	<Grid
+		BackgroundColor="Black">
+		<!-- Layer 1: ALWAYS VISIBLE Compass Bezel -->
+		<!-- This grid is now a base layer and will always be visible and rotating -->
+		<Grid
+			Opacity="0.5"
+			x:Name="CompassBezelGrid">
+			<Label
+				Text="N"
+				FontSize="20"
+				FontAttributes="Bold"
+				TextColor="White"
+				VerticalOptions="Start"
+				HorizontalOptions="Center"
+				Margin="0,0,0,0" />
+			<Label
+				Text="S"
+				FontSize="20"
+				FontAttributes="Bold"
+				TextColor="White"
+				VerticalOptions="End"
+				HorizontalOptions="Center"
+				Margin="0,0,0,0"
+				Rotation="180"
+				AnchorX="0.5"
+				AnchorY="0.5" />
+			<Label
+				Text="E"
+				FontSize="20"
+				FontAttributes="Bold"
+				TextColor="White"
+				VerticalOptions="Center"
+				HorizontalOptions="End"
+				Margin="0,0,5,0" 
+				Rotation="90"
+				AnchorX="0.5"
+				AnchorY="0.5"/>
+			<Label
+				Text="W"
+				FontSize="20"
+				FontAttributes="Bold"
+				TextColor="White"
+				VerticalOptions="Center"
+				HorizontalOptions="Start"
+				Margin="5,0,0,0"
+				Rotation="270"
+				AnchorX="0.5"
+				AnchorY="0.5" />
+		</Grid>
+		
+		<!-- State 1: View for when no location is saved -->
+		<VerticalStackLayout
+			IsVisible="{Binding IsNotLocationSaved}"
+			VerticalOptions="Center"
+			HorizontalOptions="Center"
+			Spacing="10">
+
+			<Label
+				Text="Where Did I Park?"
+				FontSize="18"
+				TextColor="White"
+				HorizontalOptions="Center" />
+
+			<!-- Simple car icon using a font character -->
+			<Label
+				Text="🚗"
+				FontSize="30"
+				HorizontalOptions="Center" />
+
+			<ActivityIndicator
+				IsRunning="{Binding IsBusy}"
+				IsVisible="{Binding IsBusy}"
+				Color="#3498db"
+				HorizontalOptions="Center" />
+
+			<Button
+				Text="Save Parking Spot"
+				Command="{Binding SaveLocationCommand}"
+				BackgroundColor="#3498db"
+				TextColor="White"
+				CornerRadius="25"
+				HorizontalOptions="Center" />
+		</VerticalStackLayout>
+
+		<!-- State 2: View for navigation -->
+		<VerticalStackLayout
+			IsVisible="{Binding IsLocationSaved}"
+			VerticalOptions="Center"
+			HorizontalOptions="Center"
+			Spacing="10">
+
+			<!-- Compass Arrow Image -->
+			<!--<Image
+				Source="compass_arrow.png"
+				Rotation="{Binding ArrowRotation}"
+				HeightRequest="50"
+				Aspect="AspectFit"
+				WidthRequest="50"
+				AnchorX="0.5"
+				AnchorY="0.5" />-->
+
+			<Image
+				x:Name="CompassArrowImage"
+				Source="compass_arrow.png"
+				HeightRequest="50"
+				WidthRequest="50"
+				AnchorX="0.5"
+				AnchorY="0.5">
+				<!-- A simple SVG arrow would also work well here -->
+				<!-- For simplicity, this assumes a 'compass_arrow.png' is in Resources/Images -->
+			</Image>
+
+			<Label
+				Text="{Binding DistanceText}"
+				FontAttributes="Bold"
+				TextColor="White"
+				HorizontalOptions="Center" />
+
+			<Button
+				Text="Clear Spot"
+				Command="{Binding ClearLocationCommand}"
+				BackgroundColor="#e74c3c"
+				TextColor="White"
+				CornerRadius="20"
+				HeightRequest="40"
+				WidthRequest="150"
+				HorizontalOptions="Center" />
+		</VerticalStackLayout>
+	</Grid>
+
+</ContentPage>
